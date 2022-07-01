@@ -1,5 +1,5 @@
 import sys
-from view.main import AppDemo
+from view.main import MainWindow
 from PyQt5.QtWidgets import QApplication
 from settings import *
 
@@ -7,7 +7,7 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     app.setApplicationDisplayName(f'{APP_NAME} - {APP_VERSION}')
 
-    demo = AppDemo()
-    demo.show()
+    window = MainWindow()
+    window.show()
 
     sys.exit(app.exec_())
