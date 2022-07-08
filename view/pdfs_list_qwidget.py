@@ -1,19 +1,10 @@
 import os
 import sys
-from PyQt5.QtWidgets import QListWidget, QWidget, QVBoxLayout, QLabel
+from PyQt5.QtWidgets import QListWidget, QWidget, QGridLayout, QLabel, QToolButton, QVBoxLayout, QSpacerItem, QSizePolicy
 from PyQt5.QtCore import Qt
 
 from settings import FILE_EXTENSION
-
-
-def try_block(function, *args, **kwargs):
-    def wrapper(*args, **kwargs):
-        try:
-            return function(*args, **kwargs)
-        except:
-            print(function.__name__)
-            print(sys.exc_info())
-    return wrapper
+from view.custom_functions import set_icon, try_block
 
 
 class ListBoxWidget(QListWidget):
@@ -59,10 +50,34 @@ class PDFsListQWidget(QWidget):
         super().__init__()
         self.label = QLabel("List of PDFs to merge:")
         self.list = ListBoxWidget()
+        self.up_button = QToolButton()
+        self.down_button = QToolButton()
+        self.add_pdf = QToolButton()
+        self.remove_pdf = QToolButton()
         self.initUI()
 
     def initUI(self):
+
+        v_layout = QVBoxLayout()
+        vertical_spacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+        v_layout.addWidget(self.up_button)
+        v_layout.addWidget(self.down_button)
+        v_layout.addWidget(self.add_pdf)
+        v_layout.addWidget(self.remove_pdf)
+        v_layout.addItem(vertical_spacer)
+
         layout = QVBoxLayout()
         layout.addWidget(self.label)
         layout.addWidget(self.list)
-        self.setLayout(layout)
+
+        grid = QGridLayout()
+        grid.addWidget(self.label, 0, 1)
+        grid.addWidget(self.list, 1, 1)
+        grid.addLayout(v_layout, 1, 0)
+
+        self.setLayout(grid)
+
+        set_icon(self.up_button, "SP_ArrowUp")
+        set_icon(self.down_button, "SP_ArrowDown")
+        set_icon(self.add_pdf, "SP_DirOpenIcon")
+        set_icon(self.remove_pdf, "SP_DialogCancelButton")
